@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GenAI.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+46d486cb0321a0ad649be631b30867dfc1ca6a87")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9eddd93983a4ab89fedee9d98f2ea833c3c0a0d1")]
 [assembly: System.Reflection.AssemblyProductAttribute("GenAI.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GenAI.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

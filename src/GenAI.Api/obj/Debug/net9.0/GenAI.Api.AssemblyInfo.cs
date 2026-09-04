@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("63f1d0ec-a4c5-4430-ab21-b858ce946dc6")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("GenAI.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+46d486cb0321a0ad649be631b30867dfc1ca6a87")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9eddd93983a4ab89fedee9d98f2ea833c3c0a0d1")]
 [assembly: System.Reflection.AssemblyProductAttribute("GenAI.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GenAI.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

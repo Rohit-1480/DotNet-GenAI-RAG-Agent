@@ -1,4 +1,7 @@
+using GenAI.Application.Interfaces;
+using GenAI.Infrastructure.AI;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddScoped<IChatService, MockChatService>();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
