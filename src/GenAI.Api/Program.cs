@@ -1,5 +1,6 @@
 using GenAI.Application.Interfaces;
 using GenAI.Infrastructure.AI;
+using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddScoped<IChatService, MockChatService>();
 builder.Services.AddScoped<IChatService>(sp =>
@@ -8,9 +9,13 @@ builder.Services.AddScoped<IChatService>(sp =>
 
     var apiKey = configuration["OpenAI:ApiKey"]
         ?? throw new InvalidOperationException("OpenAI API key is not configured.");
-    var systemPrompt = configuration["OpenAI:SystemPrompt"]
-    ?? throw new InvalidOperationException("OpenAI system prompt is not configured.");
-    return new OpenAIChatService(apiKey, systemPrompt);
+    var promptOptions = configuration
+        .GetSection("OpenAI:SystemPrompt")
+        .Get<PromptOptions>()
+        ?? throw new InvalidOperationException("OpenAI prompt configuration is not configured.");
+    //var systemPrompt = configuration["OpenAI:SystemPrompt"]
+    //?? throw new InvalidOperationException("OpenAI system prompt is not configured.");
+    return new OpenAIChatService(apiKey, promptOptions);
 });
 builder.Services.AddControllers();
 

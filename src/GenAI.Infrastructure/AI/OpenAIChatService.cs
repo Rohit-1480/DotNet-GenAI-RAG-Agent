@@ -11,12 +11,12 @@ namespace GenAI.Infrastructure.AI
     public class OpenAIChatService : IChatService
     {
         private readonly ResponsesClient _client;
-        private readonly string _systemPrompt;
+        private readonly PromptOptions _promptOptions;
 
-        public OpenAIChatService(string apiKey, string systemPrompt)
+        public OpenAIChatService(string apiKey, PromptOptions promptOptions)
         {
             _client = new ResponsesClient(apiKey);
-            _systemPrompt = systemPrompt;
+            _promptOptions = promptOptions;
         }
 
         public async Task<string> GetResponseAsync(string message)
@@ -25,8 +25,12 @@ namespace GenAI.Infrastructure.AI
                 "gpt-5.2",
                 [
                     //ResponseItem.CreateUserMessageItem(message)
-                    ResponseItem.CreateUserMessageItem(_systemPrompt),
-                    
+                   // ResponseItem.CreateUserMessageItem(_promptOptions),
+                    ResponseItem.CreateSystemMessageItem(
+    $"You are a {_promptOptions.Role}. " +
+    $"Explain concepts at a {_promptOptions.Level} level. " +
+    $"Use {_promptOptions.Language} examples when appropriate."
+),
                    ResponseItem.CreateUserMessageItem(message)
                 ]);
 
