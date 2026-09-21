@@ -1,7 +1,17 @@
 using GenAI.Application.Interfaces;
 using GenAI.Infrastructure.AI;
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddScoped<IChatService, MockChatService>();
+//builder.Services.AddScoped<IChatService, MockChatService>();
+builder.Services.AddScoped<IChatService>(sp =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+
+    var apiKey = configuration["OpenAI:ApiKey"]
+        ?? throw new InvalidOperationException("OpenAI API key is not configured.");
+    var systemPrompt = configuration["OpenAI:SystemPrompt"]
+    ?? throw new InvalidOperationException("OpenAI system prompt is not configured.");
+    return new OpenAIChatService(apiKey, systemPrompt);
+});
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
