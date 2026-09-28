@@ -10,13 +10,14 @@ namespace GenAI.Infrastructure.AI
 {
     public class OpenAIChatService : IChatService
     {
+        //private readonly ResponsesClient _client;
+        //private readonly PromptOptions _promptOptions;
         private readonly ResponsesClient _client;
-        private readonly PromptOptions _promptOptions;
-
-        public OpenAIChatService(string apiKey, PromptOptions promptOptions)
+        private readonly IPromptBuilder _promptBuilder;
+        public OpenAIChatService(string apiKey, IPromptBuilder promptOptions)
         {
             _client = new ResponsesClient(apiKey);
-            _promptOptions = promptOptions;
+            _promptBuilder = promptOptions;
         }
 
         public async Task<string> GetResponseAsync(string message)
@@ -26,10 +27,13 @@ namespace GenAI.Infrastructure.AI
                 [
                     //ResponseItem.CreateUserMessageItem(message)
                    // ResponseItem.CreateUserMessageItem(_promptOptions),
-                    ResponseItem.CreateSystemMessageItem(
-    $"You are a {_promptOptions.Role}. " +
-    $"Explain concepts at a {_promptOptions.Level} level. " +
-    $"Use {_promptOptions.Language} examples when appropriate."
+//                    ResponseItem.CreateSystemMessageItem(
+//    $"You are a {_promptOptions.Role}. " +
+//    $"Explain concepts at a {_promptOptions.Level} level. " +
+//    $"Use {_promptOptions.Language} examples when appropriate."
+//),
+ResponseItem.CreateSystemMessageItem(
+    _promptBuilder.BuildSystemPrompt()
 ),
                    ResponseItem.CreateUserMessageItem(message)
                 ]);
