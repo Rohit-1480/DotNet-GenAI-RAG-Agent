@@ -22,7 +22,8 @@ namespace GenAI.Infrastructure.Prompting
            $"You are a {_promptOptions.Role}. " +
            $"Explain concepts at a {_promptOptions.Level} level. " +
            $"Use {_promptOptions.Language} examples when appropriate."+
-           $"Format your response as {_promptOptions.OutputFormat}."; 
+           $"Format your response as {_promptOptions.OutputFormat}."+
+           $"Follow these instructions: {_promptOptions.Instructions}";
         }
     }
 }

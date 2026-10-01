@@ -14,5 +14,6 @@ namespace GenAI.Application.Interfaces
 
         public string Language { get; set; } = string.Empty;
         public string OutputFormat { get; set; } = string.Empty;
+        public string Instructions { get; set; } = string.Empty;
     }
 }
