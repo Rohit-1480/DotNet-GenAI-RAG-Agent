@@ -1,7 +1,9 @@
 using GenAI.Application.Interfaces;
 using GenAI.Infrastructure.AI;
+using GenAI.Infrastructure.Context;
 using GenAI.Infrastructure.Prompting;
 using Microsoft.Extensions.DependencyInjection;
+    
 var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddScoped<IChatService, MockChatService>();
 builder.Services.AddScoped<IChatService>(sp =>
@@ -39,6 +41,8 @@ builder.Services.AddScoped<IPromptBuilder>(sp =>
 
     return new PromptBuilder(promptOptions);
 });
+
+builder.Services.AddScoped<IContextProvider, SimpleContextProvider>();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
