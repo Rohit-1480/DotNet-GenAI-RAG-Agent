@@ -10,20 +10,49 @@ namespace GenAI.Infrastructure.Prompting
 {
     public class PromptBuilder : IPromptBuilder
     {
+        //private readonly PromptOptions _promptOptions;
+
+        //public PromptBuilder(PromptOptions promptOptions)
+        //{
+        //    _promptOptions = promptOptions;
+        //}
+        //public string BuildSystemPrompt()
+        //{
+        //    return
+        //   $"You are a {_promptOptions.Role}. " +
+        //   $"Explain concepts at a {_promptOptions.Level} level. " +
+        //   $"Use {_promptOptions.Language} examples when appropriate."+
+        //   $"Format your response as {_promptOptions.OutputFormat}."+
+        //   $"Follow these instructions: {_promptOptions.Instructions}";
+        //}
         private readonly PromptOptions _promptOptions;
+
+        private const string SystemPromptTemplate = """
+                                                  You are a {Role}.
+
+                                               Explain concepts at a {Level} level.
+
+                                              Use {Language} examples when appropriate.
+
+                                             Format your response as {OutputFormat}.
+
+                                                 Follow these instructions:
+                                         {Instructions}
+""";
 
         public PromptBuilder(PromptOptions promptOptions)
         {
             _promptOptions = promptOptions;
         }
+
         public string BuildSystemPrompt()
         {
-            return
-           $"You are a {_promptOptions.Role}. " +
-           $"Explain concepts at a {_promptOptions.Level} level. " +
-           $"Use {_promptOptions.Language} examples when appropriate."+
-           $"Format your response as {_promptOptions.OutputFormat}."+
-           $"Follow these instructions: {_promptOptions.Instructions}";
+            return SystemPromptTemplate
+                .Replace("{Role}", _promptOptions.Role)
+                .Replace("{Level}", _promptOptions.Level)
+                .Replace("{Language}", _promptOptions.Language)
+                .Replace("{OutputFormat}", _promptOptions.OutputFormat)
+                .Replace("{Instructions}", _promptOptions.Instructions);
         }
     }
 }
