@@ -38,6 +38,8 @@ namespace GenAI.Infrastructure.Prompting
 
                                                  Follow these instructions:
                                          {Instructions}
+                                         Additional context:
+{Context}
 """;
 
         public PromptBuilder(PromptOptions promptOptions)
@@ -45,14 +47,16 @@ namespace GenAI.Infrastructure.Prompting
             _promptOptions = promptOptions;
         }
 
-        public string BuildSystemPrompt()
+        public string BuildSystemPrompt(string? context)
         {
             return SystemPromptTemplate
                 .Replace("{Role}", _promptOptions.Role)
                 .Replace("{Level}", _promptOptions.Level)
                 .Replace("{Language}", _promptOptions.Language)
                 .Replace("{OutputFormat}", _promptOptions.OutputFormat)
-                .Replace("{Instructions}", _promptOptions.Instructions);
+                .Replace("{Instructions}", _promptOptions.Instructions)
+                //.Replace("{Context}", _promptOptions.Context);
+                .Replace("{Context}", context ?? string.Empty);
         }
     }
 }

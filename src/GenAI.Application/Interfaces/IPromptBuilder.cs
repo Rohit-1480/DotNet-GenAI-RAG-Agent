@@ -8,6 +8,6 @@ namespace GenAI.Application.Interfaces
 {
     public interface IPromptBuilder
     {
-        string BuildSystemPrompt();
+        string BuildSystemPrompt(string? context);
     }
 }

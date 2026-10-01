@@ -8,6 +8,7 @@ namespace GenAI.Application.Interfaces
 {
     public  interface IChatService
     {
-        Task<string> GetResponseAsync(string message);
+      //  Task<string> GetResponseAsync(string message);
+        Task<string> GetResponseAsync(string message, string? context);
     }
 }

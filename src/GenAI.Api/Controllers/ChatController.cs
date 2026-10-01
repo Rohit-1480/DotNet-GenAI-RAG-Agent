@@ -16,14 +16,15 @@ namespace GenAI.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Chat([FromBody] ChatRequest request)
         {
-            var response = await _chatService.GetResponseAsync(request.Message);
+            var response = await _chatService.GetResponseAsync(request.Message, request.Context);
 
             return Ok(new
             {
                 response
             });
         }
-        public record ChatRequest(string Message);
-       
+        //public record ChatRequest(string Message);
+        public record ChatRequest(string Message, string? Context);
+
     }
 }

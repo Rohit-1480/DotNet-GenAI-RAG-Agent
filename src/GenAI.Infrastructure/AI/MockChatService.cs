@@ -9,7 +9,7 @@ namespace GenAI.Infrastructure.AI
 {
     public class MockChatService : IChatService
     {
-        public  Task<string> GetResponseAsync(string message)
+        public  Task<string> GetResponseAsync(string message, string? Context)
         {
             var response =
             $"Mock AI Response: I received your message '{message}'.";

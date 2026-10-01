@@ -20,7 +20,8 @@ namespace GenAI.Infrastructure.AI
             _promptBuilder = promptOptions;
         }
 
-        public async Task<string> GetResponseAsync(string message)
+        //public async Task<string> GetResponseAsync(string message)
+        public async Task<string> GetResponseAsync(string message, string? Context)
         {
             var response = await _client.CreateResponseAsync(
                 "gpt-5.2",
@@ -32,10 +33,7 @@ namespace GenAI.Infrastructure.AI
 //    $"Explain concepts at a {_promptOptions.Level} level. " +
 //    $"Use {_promptOptions.Language} examples when appropriate."
 //),
-ResponseItem.CreateSystemMessageItem(
-    _promptBuilder.BuildSystemPrompt()
-),
-                   ResponseItem.CreateUserMessageItem(message)
+ResponseItem.CreateSystemMessageItem(_promptBuilder.BuildSystemPrompt(Context)),ResponseItem.CreateUserMessageItem(message)
                 ]);
 
             return response.Value.GetOutputText();
