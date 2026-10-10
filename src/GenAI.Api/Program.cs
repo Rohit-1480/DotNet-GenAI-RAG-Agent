@@ -2,6 +2,7 @@ using GenAI.Application.Interfaces;
 using GenAI.Infrastructure.AI;
 using GenAI.Infrastructure.Context;
 using GenAI.Infrastructure.Prompting;
+using GenAI.Infrastructure.Text;
 using Microsoft.Extensions.DependencyInjection;
     
 var builder = WebApplication.CreateBuilder(args);
@@ -43,6 +44,14 @@ builder.Services.AddScoped<IPromptBuilder>(sp =>
 });
 
 builder.Services.AddScoped<IContextProvider, SimpleContextProvider>();
+builder.Services.AddScoped<ITextChunker, SimpleTextChunker>();
+builder.Services.AddScoped<IEmbeddingService>(sp =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var apiKey = configuration["OpenAI:ApiKey"]
+        ?? throw new InvalidOperationException("OpenAI API key is not configured.");
+    return new OpenAIEmbeddingService(apiKey);
+});
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
