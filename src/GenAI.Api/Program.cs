@@ -4,7 +4,7 @@ using GenAI.Infrastructure.Context;
 using GenAI.Infrastructure.Prompting;
 using GenAI.Infrastructure.Text;
 using Microsoft.Extensions.DependencyInjection;
-    
+using GenAI.Infrastructure.Similarity;
 var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddScoped<IChatService, MockChatService>();
 builder.Services.AddScoped<IChatService>(sp =>
@@ -52,6 +52,7 @@ builder.Services.AddScoped<IEmbeddingService>(sp =>
         ?? throw new InvalidOperationException("OpenAI API key is not configured.");
     return new OpenAIEmbeddingService(apiKey);
 });
+builder.Services.AddScoped<ISimilarityService, CosineSimilarityService>();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
