@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GenAI.Application.Models;
 
 namespace GenAI.Infrastructure.Search
 {
@@ -23,7 +24,7 @@ namespace GenAI.Infrastructure.Search
             _similarityService = similarityService;
         }
 
-        public async Task<IReadOnlyList<DocumentChunk>> SearchAsync(
+        public async Task<IReadOnlyList<SearchResult>> SearchAsync(
             string query,
             int topK = 3)
         {
@@ -56,7 +57,12 @@ namespace GenAI.Infrastructure.Search
                 })
                 .OrderByDescending(item => item.Score)
                 .Take(topK)
-                .Select(item => item.Chunk)
+                .Select(item => new SearchResult
+                {
+                    Chunk = item.Chunk,
+                    Score = item.Score
+                })
+                //.Select(item => item.Chunk)
                 .ToList();
         }
     }

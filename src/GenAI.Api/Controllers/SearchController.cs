@@ -31,10 +31,11 @@ namespace GenAI.Api.Controllers
             {
                 Query = request.Query,
                 ResultsCount = results.Count,
-                Results = results.Select(chunk => new
+                Results = results.Select(result => new
                 {
-                    chunk.Id,
-                    chunk.Text
+                    Id = result.Chunk.Id,
+                    Text = result.Chunk.Text,
+                    Score = result.Score
                 })
             });
         }

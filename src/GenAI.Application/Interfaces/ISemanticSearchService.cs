@@ -1,4 +1,5 @@
-﻿using GenAI.Domain.Entities;
+﻿using GenAI.Application.Models;
+using GenAI.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace GenAI.Application.Interfaces
 {
     public interface ISemanticSearchService
     {
-        Task<IReadOnlyList<DocumentChunk>> SearchAsync(string query, int topK = 3);
+        Task<IReadOnlyList<SearchResult>> SearchAsync(string query, int topK = 3);
     }
 }
