@@ -5,6 +5,9 @@ using GenAI.Infrastructure.Prompting;
 using GenAI.Infrastructure.Text;
 using Microsoft.Extensions.DependencyInjection;
 using GenAI.Infrastructure.Similarity;
+using GenAI.Infrastructure.Storage;
+using GenAI.Infrastructure.Documents;
+using GenAI.Infrastructure.Search;
 var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddScoped<IChatService, MockChatService>();
 builder.Services.AddScoped<IChatService>(sp =>
@@ -53,6 +56,9 @@ builder.Services.AddScoped<IEmbeddingService>(sp =>
     return new OpenAIEmbeddingService(apiKey);
 });
 builder.Services.AddScoped<ISimilarityService, CosineSimilarityService>();
+builder.Services.AddSingleton<IDocumentChunkStore, InMemoryDocumentChunkStore>();
+builder.Services.AddScoped<IDocumentIngestionService, DocumentIngestionService>();
+builder.Services.AddScoped<ISemanticSearchService, SemanticSearchService>();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
