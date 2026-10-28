@@ -22,16 +22,20 @@ namespace GenAI.Api.Controllers
             {
                 return BadRequest("Document text cannot be empty.");
             }
-
+            if (string.IsNullOrWhiteSpace(request.Source))
+            {
+                return BadRequest("Document source cannot be empty.");
+            }
             var chunkCount = await _ingestionService
-                .IngestAsync(request.Text);
+                .IngestAsync(request.Text, request.Source);
 
             return Ok(new
             {
                 Message = "Document ingested successfully.",
+                Source = request.Source,
                 ChunksCreated = chunkCount
             });
         }
     }
-    public record IngestDocumentRequest(string Text);
+    public record IngestDocumentRequest(string Text, string Source);
 }

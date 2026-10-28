@@ -38,7 +38,14 @@ namespace GenAI.Infrastructure.Prompting
 
                                                  Follow these instructions:
                                          {Instructions}
-                                         Additional context:
+                                         Rules for answering using document context:
+1. Use the provided context when relevant.
+2. Each context entry contains a Source and Content.
+3. When using information from the context, cite the exact source name.
+4. Never invent source names or citations.
+5. If the context lacks sufficient information, say so.
+
+Additional context:
 {Context}
 """;
 

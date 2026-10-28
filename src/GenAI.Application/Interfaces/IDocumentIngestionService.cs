@@ -8,6 +8,6 @@ namespace GenAI.Application.Interfaces
 {
     public interface IDocumentIngestionService
     {
-        Task<int> IngestAsync(string documentText);
+        Task<int> IngestAsync(string documentText, string source);
     }
 }

@@ -13,5 +13,6 @@ namespace GenAI.Domain.Entities
         public string Text { get; init; } = string.Empty;
 
         public float[] Embedding { get; init; } = Array.Empty<float>();
+        public string Source { get; init; } = string.Empty;
     }
 }

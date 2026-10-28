@@ -20,13 +20,19 @@ namespace GenAI.Infrastructure.Documents
             _chunkStore = chunkStore;
         }
 
-        public async Task<int> IngestAsync(string documentText)
+        public async Task<int> IngestAsync(string documentText, string source)
         {
             if (string.IsNullOrWhiteSpace(documentText))
             {
                 throw new ArgumentException(
                     "Document text cannot be empty.",
                     nameof(documentText));
+            }
+            if (string.IsNullOrWhiteSpace(source))
+            {
+                throw new ArgumentException(
+                    "Source cannot be empty.",
+                    nameof(source));
             }
             var textChunks = _textChunker.ChunkText(documentText);
             var documentChunks = new List<DocumentChunk>();
@@ -37,7 +43,8 @@ namespace GenAI.Infrastructure.Documents
                 documentChunks.Add(new DocumentChunk
                 {
                     Text = text,
-                    Embedding = embedding
+                    Embedding = embedding,
+                    Source = source
                 });
             }
 

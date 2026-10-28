@@ -19,11 +19,25 @@ namespace GenAI.Api.Controllers
         {
             var context = await _contextProvider.GetContextAsync(request.Message);
             var response = await _chatService.GetResponseAsync(request.Message,context);
+            var sources = context
+        .Split("\n\n", StringSplitOptions.RemoveEmptyEntries)
+        .Select(entry => entry
+            .Split('\n', StringSplitOptions.RemoveEmptyEntries)
+            .FirstOrDefault(line => line.StartsWith("Source: "))
+            ?.Substring("Source: ".Length))
+        .Where(source => !string.IsNullOrWhiteSpace(source))
+        .Distinct()
+        .ToList();
 
             return Ok(new
             {
-                response
+                response,
+                sources
             });
+            //return Ok(new
+            //{
+            //    response
+            //});
         }
         public record ChatRequest(string Message);
         //public record ChatRequest(string Message, string? Context);

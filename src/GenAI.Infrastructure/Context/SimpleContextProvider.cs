@@ -25,7 +25,11 @@ namespace GenAI.Infrastructure.Context
 
             var context = string.Join(
                 "\n\n",
-                results.Select(result => result.Chunk.Text));
+                results.Select(
+                    result => /*result.Chunk.Text*/
+                    $"Source: {result.Chunk.Source}\n" +
+                   $"Content: {result.Chunk.Text}"
+                    ));
 
             return context;
         }
