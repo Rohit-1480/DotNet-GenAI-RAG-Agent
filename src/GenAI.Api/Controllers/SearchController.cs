@@ -15,8 +15,7 @@ namespace GenAI.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Search(
-            [FromBody] SearchRequest request)
+        public async Task<IActionResult> Search([FromBody] SearchRequest request)
         {
             if (string.IsNullOrWhiteSpace(request.Query))
             {
@@ -35,6 +34,7 @@ namespace GenAI.Api.Controllers
                 {
                     Id = result.Chunk.Id,
                     Text = result.Chunk.Text,
+                    Source = result.Chunk.Source,
                     Score = result.Score
                 })
             });
