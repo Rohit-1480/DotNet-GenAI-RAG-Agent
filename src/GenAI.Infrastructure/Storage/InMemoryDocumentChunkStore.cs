@@ -13,7 +13,23 @@ namespace GenAI.Infrastructure.Storage
         private readonly List<DocumentChunk> _chunks = new();
         public Task AddChunksAsync(IReadOnlyList<DocumentChunk> chunks)
         {
+            //_chunks.AddRange(chunks);
+            //return Task.CompletedTask;
+            if (chunks == null || chunks.Count == 0)
+                return Task.CompletedTask;
+
+            var source = chunks[0].Source;
+
+            // Remove existing chunks belonging to the same source
+            _chunks.RemoveAll(x =>
+                string.Equals(
+                    x.Source,
+                    source,
+                    StringComparison.OrdinalIgnoreCase));
+
+            // Add the latest document chunks
             _chunks.AddRange(chunks);
+
             return Task.CompletedTask;
         }
 
