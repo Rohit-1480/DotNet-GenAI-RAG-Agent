@@ -24,7 +24,8 @@ namespace GenAI.Api.Controllers
 
             var results = await _searchService.SearchAsync(
                 request.Query,
-                request.TopK);
+                request.TopK,
+                request.Source);
 
             return Ok(new
             {
@@ -40,5 +41,5 @@ namespace GenAI.Api.Controllers
             });
         }
     }
-    public record SearchRequest(string Query, int TopK = 3);
+    public record SearchRequest(string Query, int TopK = 3, string? Source = null);
     }

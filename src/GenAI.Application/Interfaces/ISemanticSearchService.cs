@@ -10,6 +10,7 @@ namespace GenAI.Application.Interfaces
 {
     public interface ISemanticSearchService
     {
-        Task<IReadOnlyList<SearchResult>> SearchAsync(string query, int topK = 3);
+        //Task<IReadOnlyList<SearchResult>> SearchAsync(string query, int topK = 3);
+        Task<IReadOnlyList<SearchResult>> SearchAsync(string query, int topK = 3, string? source = null);
     }
 }

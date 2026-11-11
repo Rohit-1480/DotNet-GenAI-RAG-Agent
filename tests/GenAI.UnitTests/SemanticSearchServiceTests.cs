@@ -94,6 +94,156 @@ namespace GenAI.UnitTests
             await Assert.ThrowsAsync<ArgumentException>(
                 () => service.SearchAsync(query));
         }
+        [Fact]
+        public async Task SearchAsync_WithForexSource_ReturnsOnlyForexChunks()
+        {
+            // Arrange
+            var forexChunk = new DocumentChunk
+            {
+                Text = "Forex exchange rates",
+                Source = "Forex_Guide.txt",
+                Embedding = [1, 0]
+            };
+
+            var bankingChunk = new DocumentChunk
+            {
+                Text = "Banking services",
+                Source = "Banking_Guide.txt",
+                Embedding = [1, 0]
+            };
+
+            var service = new SemanticSearchService(
+                new FakeEmbeddingService(),
+                new FakeDocumentChunkStore([forexChunk, bankingChunk]),
+                new FakeSimilarityService());
+
+            // Act
+            var results = await service.SearchAsync(
+                "currency exchange",
+                source: "Forex_Guide.txt");
+
+            // Assert
+            Assert.Single(results);
+            Assert.Equal("Forex_Guide.txt", results[0].Chunk.Source);
+        }
+
+        [Fact]
+        public async Task SearchAsync_WithBankingSource_ReturnsOnlyBankingChunks()
+        {
+            // Arrange
+            var forexChunk = new DocumentChunk
+            {
+                Text = "Forex exchange rates",
+                Source = "Forex_Guide.txt",
+                Embedding = [1, 0]
+            };
+
+            var bankingChunk = new DocumentChunk
+            {
+                Text = "Banking services",
+                Source = "Banking_Guide.txt",
+                Embedding = [1, 0]
+            };
+
+            var service = new SemanticSearchService(
+                new FakeEmbeddingService(),
+                new FakeDocumentChunkStore([forexChunk, bankingChunk]),
+                new FakeSimilarityService());
+
+            // Act
+            var results = await service.SearchAsync(
+                "banking services",
+                source: "Banking_Guide.txt");
+
+            // Assert
+            Assert.Single(results);
+            Assert.Equal("Banking_Guide.txt", results[0].Chunk.Source);
+        }
+
+
+        [Fact]
+        public async Task SearchAsync_SourceMatchingIsCaseInsensitive()
+        {
+            // Arrange
+            var chunk = new DocumentChunk
+            {
+                Text = "Forex exchange rates",
+                Source = "Forex_Guide.txt",
+                Embedding = [1, 0]
+            };
+
+            var service = new SemanticSearchService(
+                new FakeEmbeddingService(),
+                new FakeDocumentChunkStore([chunk]),
+                new FakeSimilarityService());
+
+            // Act
+            var results = await service.SearchAsync(
+                "currency exchange",
+                source: "forex_guide.TXT");
+
+            // Assert
+            Assert.Single(results);
+        }
+
+
+        [Fact]
+        public async Task SearchAsync_WithUnknownSource_ReturnsEmptyResults()
+        {
+            // Arrange
+            var chunk = new DocumentChunk
+            {
+                Text = "Forex exchange rates",
+                Source = "Forex_Guide.txt",
+                Embedding = [1, 0]
+            };
+
+            var service = new SemanticSearchService(
+                new FakeEmbeddingService(),
+                new FakeDocumentChunkStore([chunk]),
+                new FakeSimilarityService());
+
+            // Act
+            var results = await service.SearchAsync(
+                "currency exchange",
+                source: "Unknown.txt");
+
+            // Assert
+            Assert.Empty(results);
+        }
+
+
+        [Fact]
+        public async Task SearchAsync_WithNullSource_SearchesAllDocuments()
+        {
+            // Arrange
+            var forexChunk = new DocumentChunk
+            {
+                Text = "Forex exchange rates",
+                Source = "Forex_Guide.txt",
+                Embedding = [1, 0]
+            };
+
+            var bankingChunk = new DocumentChunk
+            {
+                Text = "Banking services",
+                Source = "Banking_Guide.txt",
+                Embedding = [1, 0]
+            };
+
+            var service = new SemanticSearchService(
+                new FakeEmbeddingService(),
+                new FakeDocumentChunkStore([forexChunk, bankingChunk]),
+                new FakeSimilarityService());
+
+            // Act
+            var results = await service.SearchAsync(
+                "general search",
+                source: null);
+
+            // Assert
+            Assert.Equal(2, results.Count);
+        }
         private sealed class FakeEmbeddingService : IEmbeddingService
         {
             public Task<float[]> GetEmbeddingAsync(string text)

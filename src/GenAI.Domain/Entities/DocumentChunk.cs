@@ -14,5 +14,8 @@ namespace GenAI.Domain.Entities
 
         public float[] Embedding { get; init; } = Array.Empty<float>();
         public string Source { get; init; } = string.Empty;
+        public Guid DocumentId { get; set; }
+
+        public Document Document { get; set; } = null!;
     }
 }

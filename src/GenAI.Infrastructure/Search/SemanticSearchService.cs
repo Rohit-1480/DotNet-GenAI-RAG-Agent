@@ -26,7 +26,7 @@ namespace GenAI.Infrastructure.Search
 
         public async Task<IReadOnlyList<SearchResult>> SearchAsync(
             string query,
-            int topK = 3)
+            int topK = 3, string? source = null)
         {
             if (string.IsNullOrWhiteSpace(query))
             {
@@ -46,6 +46,17 @@ namespace GenAI.Infrastructure.Search
                 .GetEmbeddingAsync(query);
 
             var chunks = await _chunkStore.GetAllChunksAsync();
+
+            // Apply optional source-based filtering
+            if (!string.IsNullOrWhiteSpace(source))
+            {
+                chunks = chunks
+                    .Where(chunk => string.Equals(
+                        chunk.Source,
+                        source,
+                        StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
 
             return chunks
                 .Select(chunk => new

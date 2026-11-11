@@ -61,7 +61,7 @@ namespace GenAI.UnitTests
             }
 
             public Task<IReadOnlyList<SearchResult>> SearchAsync(
-                string query, int topK = 3)
+                string query, int topK = 3, string? source = null)
             {
                 CallCount++;
                 LastQuery = query;

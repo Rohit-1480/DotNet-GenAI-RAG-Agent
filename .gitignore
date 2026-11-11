@@ -19,3 +19,9 @@ secrets.json
 # OS files
 .DS_Store
 Thumbs.db
+
+# SQLite database files
+**/GenAI.db
+**/GenAI.db-shm
+**/GenAI.db-wal
+**/GenAI_Backup.db

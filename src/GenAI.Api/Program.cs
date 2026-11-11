@@ -8,6 +8,8 @@ using GenAI.Infrastructure.Similarity;
 using GenAI.Infrastructure.Storage;
 using GenAI.Infrastructure.Documents;
 using GenAI.Infrastructure.Search;
+using Microsoft.EntityFrameworkCore;
+using GenAI.Infrastructure.Persistence;
 var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddScoped<IChatService, MockChatService>();
 builder.Services.AddScoped<IChatService>(sp =>
@@ -56,7 +58,23 @@ builder.Services.AddScoped<IEmbeddingService>(sp =>
     return new OpenAIEmbeddingService(apiKey);
 });
 builder.Services.AddScoped<ISimilarityService, CosineSimilarityService>();
-builder.Services.AddSingleton<IDocumentChunkStore, InMemoryDocumentChunkStore>();
+//builder.Services.AddSingleton<IDocumentChunkStore, InMemoryDocumentChunkStore>();
+
+var dbPath = Path.Combine(
+    builder.Environment.ContentRootPath,
+    "GenAI.db");
+
+//builder.Services.AddDbContext<GenAIDbContext>(options =>
+//    options.UseSqlite($"Data Source={dbPath}"));
+builder.Services.AddDbContext<GenAIDbContext>(options =>
+    options.UseSqlite($"Data Source={dbPath}")
+           .EnableSensitiveDataLogging()
+           .LogTo(Console.WriteLine, LogLevel.Information));
+//builder.Services.AddDbContext<GenAIDbContext>(options =>
+//    options.UseSqlite(
+//        builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IDocumentChunkStore, SqliteDocumentChunkStore>();
 builder.Services.AddScoped<IDocumentIngestionService, DocumentIngestionService>();
 builder.Services.AddScoped<ISemanticSearchService, SemanticSearchService>();
 builder.Services.AddControllers();
